@@ -24,6 +24,13 @@ RLPx is a cryptographic peer-to-peer network and protocol suite which provides a
 
 The current version of RLPx provides a network layer for Ethereum. Roadmap:
 
+* Priority:
+        * Address issues described in https://www.cs.bu.edu/~goldbe/projects/eclipseEth.pdf
+		* no DHT, no self-lookups
+		* random walk processes (static secret and random)
+		* change timestamp to nonce
+        * Annotate v4 discovery protocol, issues
+        * Annotate v5 discovery protocol, issues
 * Completed:
 	* UDP Node Discovery for single protocol
 	* ECDSA Signed UDP
@@ -31,15 +38,14 @@ The current version of RLPx provides a network layer for Ethereum. Roadmap:
 	* Peer Persistence
 	* Encrypted/Authenticated TCP
 	* TCP Framing
-* May '15: Beta
+* Next Steps:
+        * sub-authentication
 	* Node Discovery for single protocol
-	* Transport is feature complete
+	* Feature complete transport: framing, standard aead
 	* Encrypted UDP
-* July '15: Beta
-	* Revisit node table algorithm
-	* Discovery support for multiple protocols
-* Winter '15: 1.0
-	* Node Discovery for multiple protocols
+	* Node table: bits-per-hop, bucket splitting, eviction mgmt (stale/cache)
+	* Discovery: clusters
+        * Simplified flow control
 	* Feature complete UDP
 
 # Features
@@ -54,10 +60,9 @@ The current version of RLPx provides a network layer for Ethereum. Roadmap:
 	* authenticated connectivity (ECDH+ECDHE, AES128)
 	* authenticated discovery protocol (ECDSA)
 	* encrypted transport (AES256)
-	* protocols sharing a connection are provided uniform bandwidth (framing)
-	* nodes have access to a uniform network topology
-	* peers can uniformly connect to network
-	* localised peer reputation model
+	* uniform flow control
+	* uniform network connectivity and topology
+	* localised peer reputation
 
 # Transport
 ### Objectives
@@ -84,7 +89,7 @@ All cryptographic operations are based on secp256k1 and each node is expected to
 
 An RLPx implementation is composed of:
 
-* Node Discovery
+* Discovery
 * Encrypted Transport
 * Framing
 * Flow Control
@@ -98,7 +103,7 @@ Node discovery and network formation are implemented via a kademlia-like UDP. Ma
 
 * packets are signed
 * node ids are public keys
-* DHT-related features are excluded. FIND_VALUE and STORE packets are not implemented. 
+* DHT-related features are excluded. FIND_VALUE, FIND_NODE and STORE packets are not implemented. 
 * xor distance metric is based on sha3(nodeid)
 
 The parameters chosen for kademlia are a bucket size of 16 (denoted k in Kademlia), concurrency of 3 (denoted alpha in Kademlia), and 8 bits per hop (denoted b in Kademlia) for routing. The eviction check interval is 75 milliseconds, request timeouts are 300ms, and the idle bucket-refresh interval is 3600 seconds. Until encryption is implemented packets have a timestamp property to reduce the window of time for carrying out replay attacks. How the timestamp is handled is up to the receiver and it's recommended that the receiver only accept packets created within the last 3 seconds; timestamps can be ignored for Pong packets. In order to reduce the chance that packets are fragmented the maximum size of a datagram is 1280 bytes, as this is the minimum size of an IPv6 datagram.
