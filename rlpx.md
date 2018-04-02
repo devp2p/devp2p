@@ -25,12 +25,12 @@ RLPx is a cryptographic peer-to-peer network and protocol suite which provides a
 The current version of RLPx provides a network layer for Ethereum. Roadmap:
 
 * Priority:
-        * Address issues described in https://www.cs.bu.edu/~goldbe/projects/eclipseEth.pdf
+	* Address issues described in https://www.cs.bu.edu/~goldbe/projects/eclipseEth.pdf
 		* no DHT, no self-lookups
 		* random walk processes (static secret and random)
 		* change timestamp to nonce
-        * Annotate v4 discovery protocol, issues
-        * Annotate v5 discovery protocol, issues
+	* Annotate v4 discovery protocol, issues
+	* Annotate v5 discovery protocol, issues
 * Completed:
 	* UDP Node Discovery for single protocol
 	* ECDSA Signed UDP
@@ -39,13 +39,13 @@ The current version of RLPx provides a network layer for Ethereum. Roadmap:
 	* Encrypted/Authenticated TCP
 	* TCP Framing
 * Next Steps:
-        * sub-authentication
+	* sub-authentication
 	* Node Discovery for single protocol
 	* Feature complete transport: framing, standard aead
 	* Encrypted UDP
 	* Node table: bits-per-hop, bucket splitting, eviction mgmt (stale/cache)
 	* Discovery: clusters
-        * Simplified flow control
+	* Simplified flow control
 	* Feature complete UDP
 
 # Features
